@@ -5,7 +5,7 @@ import appeng.menu.me.items.PatternEncodingTermMenu;
 import appeng.menu.slot.RestrictedInputSlot;
 import appeng.parts.encoding.EncodingMode;
 import com.extendedae_plus.api.upload.IPatternEncodingShiftUploadSync;
-import com.extendedae_plus.util.uploadPattern.ExtendedAEPatternUploadUtil;
+import com.extendedae_plus.util.uploadPattern.AssemblyMatrixPatternUploadUtil;
 import com.glodblock.github.glodium.network.packet.sync.ActionMap;
 import com.glodblock.github.glodium.network.packet.sync.IActionHolder;
 import net.minecraft.core.component.DataComponents;
@@ -64,7 +64,7 @@ public abstract class ContainerPatternEncodingTermMenuMixin implements IActionHo
                 }
                 var stack = this.encodedPatternSlot != null ? this.encodedPatternSlot.getItem() : net.minecraft.world.item.ItemStack.EMPTY;
                 if (stack != null && !stack.isEmpty() && PatternDetailsHelper.isEncodedPattern(stack)) {
-                    ExtendedAEPatternUploadUtil.uploadFromEncodingMenuToMatrix(sp, menu);
+                    AssemblyMatrixPatternUploadUtil.uploadFromEncodingMenuToMatrix(sp, menu);
                 } else {
                     // 槽位可能尚未同步到位，继续下一 tick 重试
                     if (attemptsLeft > 0) {
@@ -125,7 +125,7 @@ public abstract class ContainerPatternEncodingTermMenuMixin implements IActionHo
             // 为避免与 AE2 后续同步竞争，切到下一 tick 执行
             sp.server.execute(() -> {
                 try {
-                    ExtendedAEPatternUploadUtil.uploadFromEncodingMenuToMatrix(sp, menu);
+                    AssemblyMatrixPatternUploadUtil.uploadFromEncodingMenuToMatrix(sp, menu);
                 } catch (Throwable ignored) {
                 }
             });

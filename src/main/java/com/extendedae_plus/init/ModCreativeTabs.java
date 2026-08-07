@@ -4,7 +4,6 @@ import com.extendedae_plus.ExtendedAEPlus;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -31,17 +30,12 @@ public final class ModCreativeTabs {
                                 ModItems.CHANNEL_CARD.get().getDefaultInstance(),
                                 ModItems.VIRTUAL_CRAFTING_CARD.get().getDefaultInstance(),
                                 ModItems.EXTENDED_PATTERN_PROVIDER_EXPANSION_CARD_PLUS.get().getDefaultInstance(),
-                                ModItems.ENTITY_TICKER_PART_ITEM.get().getDefaultInstance(),
                                 ModItems.INFINITY_BIGINTEGER_CELL_ITEM.get().getDefaultInstance(),
                                 ModItems.ASSEMBLER_MATRIX_SPEED_PLUS.get().getDefaultInstance(),
                                 ModItems.ASSEMBLER_MATRIX_CRAFTER_PLUS.get().getDefaultInstance(),
                                 ModItems.ASSEMBLER_MATRIX_PATTERN_PLUS.get().getDefaultInstance(),
-                                ModItems.SUPER_ASSEMBLER_MATRIX_FRAME.get().getDefaultInstance(),
-                                ModItems.SUPER_ASSEMBLER_MATRIX_WALL.get().getDefaultInstance(),
                                 ModItems.MIRROR_PATTERN_PROVIDER.get().getDefaultInstance(),
                                 ModItems.TAG_INVENTORY_ME_INTERFACE.get().getDefaultInstance(),
-                                ModItems.CRYSTAL_ASSEMBLER_PLUS.get().getDefaultInstance(),
-                                ModItems.CIRCUIT_CUTTER_PLUS.get().getDefaultInstance(),
                                 ModItems.C_H716.get().getDefaultInstance(),
                                 ModItems.FISH_DAN.get().getDefaultInstance(),
                                 ModItems._FENG.get().getDefaultInstance(),
@@ -52,14 +46,7 @@ public final class ModCreativeTabs {
                                 ModItems.BASIC_CORE.get().getDefaultInstance(),
                                 ModItems.STORAGE_CORE.get().getDefaultInstance(),
                                 ModItems.SPATIAL_CORE.get().getDefaultInstance(),
-                                ModItems.INFINITY_CORE.get().getDefaultInstance(),
-                                ModItems.LATTRA_CRYSTAL.get().getDefaultInstance(),
-                                ModItems.LATTRA_CRYSTAL_BLOCK.get().getDefaultInstance(),
-                                ModItems.LATTRA_DUST.get().getDefaultInstance(),
-                                ModItems.LATTRA_BUDDING_HARDLY.get().getDefaultInstance(),
-                                ModItems.LATTRA_BUDDING_HALF.get().getDefaultInstance(),
-                                ModItems.LATTRA_BUDDING_MOSTLY.get().getDefaultInstance(),
-                                ModItems.LATTRA_BUDDING_FULLY.get().getDefaultInstance()
+                                ModItems.INFINITY_CORE.get().getDefaultInstance()
                         ).forEach(output::accept);
 
                         if (ModItems.ENERGY_STORAGE_CORE != null) {
@@ -67,12 +54,6 @@ public final class ModCreativeTabs {
                         }
                         if (ModItems.QUANTUM_STORAGE_CORE != null) {
                             output.accept(ModItems.QUANTUM_STORAGE_CORE.get());
-                        }
-
-                        // 放入四个预设的 stacks（x2,x4,x8,x16），使用 ModItems 工厂创建
-                        for (byte multiplier : new byte[] {2, 4, 8, 16}) {
-                            ItemStack stack = ModItems.createEntitySpeedCardStack(multiplier);
-                            output.accept(stack);
                         }
                     })
                     .build());

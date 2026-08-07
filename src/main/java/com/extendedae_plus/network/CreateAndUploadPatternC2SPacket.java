@@ -10,8 +10,7 @@ import appeng.api.storage.StorageHelper;
 import appeng.core.definitions.AEItems;
 import appeng.me.helpers.PlayerSource;
 import com.extendedae_plus.ExtendedAEPlus;
-import com.extendedae_plus.util.uploadPattern.CtrlQPendingUploadUtil;
-import com.extendedae_plus.util.uploadPattern.ExtendedAEPatternUploadUtil;
+import com.extendedae_plus.util.uploadPattern.AssemblyMatrixPatternUploadUtil;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -107,7 +106,7 @@ public class CreateAndUploadPatternC2SPacket implements CustomPacketPayload {
 			}
 			RecipeHolder<?> recipeHolder = recipeOpt.get();
 
-			IGrid grid = CtrlQPendingUploadUtil.findPlayerGrid(player);
+			IGrid grid = AssemblyMatrixPatternUploadUtil.findPlayerGrid(player);
 			if (grid == null) {
 				player.displayClientMessage(Component.translatable("message.extendedae_plus.no_network"), false);
 				return;
@@ -133,7 +132,7 @@ public class CreateAndUploadPatternC2SPacket implements CustomPacketPayload {
 				return;
 			}
 
-			boolean uploaded = ExtendedAEPatternUploadUtil.uploadPatternToMatrix(player, pattern, grid);
+			boolean uploaded = AssemblyMatrixPatternUploadUtil.uploadPatternToMatrix(player, pattern, grid);
 			if (!uploaded) {
 				if(!player.getInventory().add(pattern)){
 					player.drop(pattern.copy(),false);

@@ -70,27 +70,20 @@ A multiplication control button is added in the pattern provider GUI, allowing p
 
 <br/>
 
-### 3. Pattern Encoding Terminal Enhancements
-
-- **Upload Feature:** Directly upload patterns to the corresponding machine’s pattern provider via the upload button. JEI-pulled recipes detect the machine name and automatically search for matching providers. Automatic search uses a mapping table; mapping keys can be added in the upload interface.
-- **Quick Clear:** Right-click the upload search box to clear input quickly.
-
-<br/>
-
-### 4. Pattern Quantity Display & Naming Optimization
+### 3. Pattern Quantity Display & Naming Optimization
 
 - Adds “Pattern Craft Quantity” display in AE2 and ExtendedAE pattern management terminals and providers.
 - Pattern provider UI title displays player-customized names.
 
 <br/>
 
-### 5. AE Performance Optimization
+### 4. AE Performance Optimization
 
 - New config option **Crafting Pause Threshold** (default: 100000) adjusts AE’s thread sleep behavior during crafting plan calculation, significantly improving speed for large crafting plans.
 
 <br/>
 
-### 6. Quartz Cutter Function Extension
+### 5. Quartz Cutter Function Extension
 
 - **Shift + Right-click Block or AE Component:** Copies its name, supporting copying of sub-recipe names from large GregTech machines.
 
@@ -98,9 +91,9 @@ A multiplication control button is added in the pattern provider GUI, allowing p
 
 ## III. ExtendedAE Enhancements
 
-### 1. Fast Pattern Upload
+### 1. Assembly Matrix Auto Upload
 
-- **Auto-detect Assembly Matrix:** If an assembly matrix exists in the network, patterns completed in the Pattern Encoding Terminal (for crafting, smelting, or cutting) are automatically uploaded. Existing identical patterns are detected and returned, avoiding duplicates.(Pressing shift can not trigger automatic uploads)  
+- **Upload Core:** Patterns completed in the Pattern Encoding Terminal are automatically inserted into an Assembly Matrix containing an Assembly Matrix Upload Core. Existing identical patterns are detected and returned, avoiding duplicates. Holding Shift skips automatic upload.
 
 <br/>
 

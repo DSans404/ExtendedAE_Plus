@@ -3,11 +3,6 @@ package com.extendedae_plus.common.definitions;
 import appeng.core.localization.LocalizationEnum;
 
 public enum EAPText implements LocalizationEnum {
-    Accelerate("Entity Acceleration", Type.TOOLTIP),
-    AccelerateEnabled("Accelerate target block entity ticks", Type.TOOLTIP),
-    AccelerateDisabled("Do not accelerate target block entities", Type.TOOLTIP),
-    AccelerateBlacklisted("Target is blacklisted", Type.TOOLTIP),
-
     RedstoneControl("Redstone control", Type.TOOLTIP),
     RedstoneControlEnabled("Control acceleration with redstone signal", Type.TOOLTIP),
     RedstoneControlDisabled("Ignore redstone signals", Type.TOOLTIP),

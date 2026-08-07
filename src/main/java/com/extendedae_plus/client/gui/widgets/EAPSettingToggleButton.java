@@ -48,16 +48,6 @@ public class EAPSettingToggleButton<T extends Enum<T>> extends IconButton {
 
         if (appearances == null) {
             appearances = new HashMap<>();
-            registerApp(Icon.VALID, EAPSettings.ACCELERATE, YesNo.YES,
-                    EAPText.Accelerate,
-                    EAPText.AccelerateEnabled);
-            registerApp(Icon.INVALID, EAPSettings.ACCELERATE, YesNo.NO,
-                    EAPText.Accelerate,
-                    EAPText.AccelerateDisabled);
-            registerApp(Icon.INVALID, EAPSettings.ACCELERATE, YesNo.UNDECIDED,
-                    EAPText.Accelerate,
-                    EAPText.AccelerateBlacklisted);
-
             registerApp(Icon.REDSTONE_LOW, EAPSettings.REDSTONE_CONTROL, YesNo.YES,
                     EAPText.RedstoneControl,
                     EAPText.RedstoneControlEnabled);

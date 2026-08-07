@@ -5,11 +5,8 @@ import appeng.api.stacks.GenericStack;
 import com.extendedae_plus.client.ModKeybindings;
 import com.extendedae_plus.integration.jei.JeiRuntimeProxy;
 import com.extendedae_plus.network.CreateAndUploadPatternC2SPacket;
-import com.extendedae_plus.network.CreateCtrlQPatternC2SPacket;
-import com.extendedae_plus.network.RequestProvidersListC2SPacket;
 import com.extendedae_plus.util.RecipeFinderUtil;
 import com.extendedae_plus.util.RecipeInfo;
-import com.extendedae_plus.util.uploadPattern.ExtendedAEPatternUploadUtil;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.ingredients.ITypedIngredient;
@@ -19,7 +16,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -89,7 +85,7 @@ public final class CtrlQPatternKeyHandler {
 		List<ItemStack> selectedIngredients = selectIngredientsWithJeiPriority(selected);
 		List<ItemStack> selectedOutputs = convertOutputsToItemStacks(selected);
 
-		PacketDistributor.sendToServer(new CreateCtrlQPatternC2SPacket(
+		PacketDistributor.sendToServer(new CreateAndUploadPatternC2SPacket(
 			selected.getRecipeId(),
 			selected.isCraftingRecipe(),
 			selectedIngredients,
@@ -157,8 +153,6 @@ public final class CtrlQPatternKeyHandler {
 			RecipeInfo matching = matchById(recipeInfos, recipeId);
 			List<ItemStack> selectedIngredients = selectIngredientsWithJeiPriority(matching);
 			List<ItemStack> selectedOutputs = convertOutputsToItemStacks(matching);
-			ExtendedAEPatternUploadUtil.presetCraftingProviderSearchKey();
-
 			PacketDistributor.sendToServer(new CreateAndUploadPatternC2SPacket(
 				recipeId,
 				matching.isCraftingRecipe(),
@@ -194,14 +188,6 @@ public final class CtrlQPatternKeyHandler {
 				return;
 			}
 
-			Object recipeBase = null;
-			try {
-				var getRecipeMethod = recipeBookmark.getClass().getMethod("getRecipe");
-				recipeBase = getRecipeMethod.invoke(recipeBookmark);
-			} catch (Throwable ignored) {
-			}
-			setLastProcessingNameFromRecipe(recipeBase != null ? recipeBase : recipeOpt.get());
-
 			List<RecipeInfo> recipeInfos = findRecipeInfosForBookmark(recipeBookmark);
 			if (recipeInfos.isEmpty()) {
 				if (mc.player != null) {
@@ -214,12 +200,11 @@ public final class CtrlQPatternKeyHandler {
 			List<ItemStack> selectedIngredients = selectIngredientsWithJeiPriority(matching);
 			List<ItemStack> selectedOutputs = convertOutputsToItemStacks(matching);
 
-			PacketDistributor.sendToServer(new CreateCtrlQPatternC2SPacket(
+			PacketDistributor.sendToServer(new CreateAndUploadPatternC2SPacket(
 				recipeId,
 				matching.isCraftingRecipe(),
 				selectedIngredients,
 				selectedOutputs,
-				true,
 				isAllowSubstitutes,
 				isFluidSubstitutes
 			));
@@ -332,44 +317,6 @@ public final class CtrlQPatternKeyHandler {
 			return (Optional<ITypedIngredient<?>>) (Optional<?>) Optional.of(value);
 		}
 		return Optional.empty();
-	}
-
-	private static void setLastProcessingNameFromRecipe(Object recipeBase) {
-		String name = null;
-		
-		// 处理 RecipeHolder
-		if (recipeBase != null && "net.minecraft.world.item.crafting.RecipeHolder".equals(recipeBase.getClass().getName())) {
-			try {
-				var valueMethod = recipeBase.getClass().getMethod("value");
-				Object actualRecipe = valueMethod.invoke(recipeBase);
-				if (actualRecipe != null) {
-					recipeBase = actualRecipe;
-				}
-			} catch (Throwable ignored) {
-			}
-		}
-		
-		if (recipeBase instanceof Recipe<?> recipe) {
-			name = ExtendedAEPatternUploadUtil.mapRecipeTypeToSearchKey(recipe);
-		} else if (recipeBase != null
-			&& "com.gregtechceu.gtceu.api.recipe.GTRecipe".equals(recipeBase.getClass().getName())) {
-			name = ExtendedAEPatternUploadUtil.mapGTCEuRecipeToSearchKey(recipeBase);
-		} else if (recipeBase != null
-			&& "com.gregtechceu.gtceu.integration.jei.recipe.GTRecipeWrapper".equals(recipeBase.getClass().getName())) {
-			try {
-				var field = recipeBase.getClass().getField("recipe");
-				Object inner = field.get(recipeBase);
-				name = ExtendedAEPatternUploadUtil.mapGTCEuRecipeToSearchKey(inner);
-			} catch (Throwable ignored) {
-			}
-		}
-
-		if (name == null || name.isBlank()) {
-			name = ExtendedAEPatternUploadUtil.deriveSearchKeyFromUnknownRecipe(recipeBase);
-		}
-		if (name != null && !name.isBlank()) {
-			ExtendedAEPatternUploadUtil.setLastProcessingName(name);
-		}
 	}
 
 	private static List<ItemStack> selectIngredientsWithJeiPriority(RecipeInfo recipeInfo) {

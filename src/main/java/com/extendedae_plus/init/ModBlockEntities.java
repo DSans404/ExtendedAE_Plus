@@ -6,14 +6,10 @@ import com.extendedae_plus.content.ae2.TagInventoryMEInterfaceBlockEntity;
 import com.extendedae_plus.content.matrix.CrafterCorePlusBlockEntity;
 import com.extendedae_plus.content.matrix.PatternCorePlusBlockEntity;
 import com.extendedae_plus.content.matrix.SpeedCorePlusBlockEntity;
-import com.extendedae_plus.content.matrix.supermatrix.SuperAssemblerMatrixFrameBlockEntity;
-import com.extendedae_plus.content.matrix.supermatrix.SuperAssemblerMatrixWallBlockEntity;
 import com.extendedae_plus.content.wireless.WirelessTransceiverBlockEntity;
 import com.extendedae_plus.content.wireless.LabeledWirelessTransceiverBlockEntity;
 import com.extendedae_plus.content.controller.NetworkPatternControllerBlockEntity;
 import com.extendedae_plus.content.matrix.UploadCoreBlockEntity;
-import com.extendedae_plus.content.crystal.SuperCrystalAssemblerBlockEntity;
-import com.extendedae_plus.content.cutter.SuperCircuitCutterBlockEntity;
 import appeng.blockentity.crafting.CraftingBlockEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -84,16 +80,6 @@ public final class ModBlockEntities {
                     ()-> BlockEntityType.Builder.of(PatternCorePlusBlockEntity::new,
                             ModBlocks.ASSEMBLER_MATRIX_PATTERN_PLUS.get()).build(null));
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SuperAssemblerMatrixFrameBlockEntity>> SUPER_ASSEMBLER_MATRIX_FRAME_BE =
-            BLOCK_ENTITY_TYPES.register("super_assembler_matrix_frame",
-                    () -> BlockEntityType.Builder.of(SuperAssemblerMatrixFrameBlockEntity::new,
-                            ModBlocks.SUPER_ASSEMBLER_MATRIX_FRAME.get()).build(null));
-
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SuperAssemblerMatrixWallBlockEntity>> SUPER_ASSEMBLER_MATRIX_WALL_BE =
-            BLOCK_ENTITY_TYPES.register("super_assembler_matrix_wall",
-                    () -> BlockEntityType.Builder.of(SuperAssemblerMatrixWallBlockEntity::new,
-                            ModBlocks.SUPER_ASSEMBLER_MATRIX_WALL.get()).build(null));
-
     //镜像样板供应器
     public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<MirrorPatternProviderBlockEntity>> MIRROR_PATTERN_PROVIDER_BE=
             BLOCK_ENTITY_TYPES.register("mirror_pattern_provider",
@@ -105,12 +91,4 @@ public final class ModBlockEntities {
                     () -> BlockEntityType.Builder.of(TagInventoryMEInterfaceBlockEntity::new,
                             ModBlocks.TAG_INVENTORY_ME_INTERFACE.get()).build(null));
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SuperCrystalAssemblerBlockEntity>> CRYSTAL_ASSEMBLER_PLUS_BE =
-            BLOCK_ENTITY_TYPES.register("crystal_assembler_plus",
-                    () -> BlockEntityType.Builder.of(SuperCrystalAssemblerBlockEntity::new,
-                            ModBlocks.CRYSTAL_ASSEMBLER_PLUS.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SuperCircuitCutterBlockEntity>> CIRCUIT_CUTTER_PLUS_BE =
-            BLOCK_ENTITY_TYPES.register("circuit_cutter_plus",
-                    () -> BlockEntityType.Builder.of(SuperCircuitCutterBlockEntity::new,
-                            ModBlocks.CIRCUIT_CUTTER_PLUS.get()).build(null));
 }

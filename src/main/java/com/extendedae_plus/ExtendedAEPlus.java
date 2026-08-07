@@ -1,11 +1,8 @@
 package com.extendedae_plus;
 
-import appeng.api.parts.IPart;
-import appeng.api.parts.PartModels;
 import appeng.api.storage.StorageCells;
 import appeng.block.AEBaseEntityBlock;
 import appeng.blockentity.crafting.CraftingBlockEntity;
-import appeng.items.parts.PartModelsHelper;
 import com.extendedae_plus.api.ids.EAPComponents;
 import com.extendedae_plus.api.storage.InfinityBigIntegerCellHandler;
 import com.extendedae_plus.ae.wireless.LabelNetworkRegistry;
@@ -15,8 +12,6 @@ import com.extendedae_plus.content.ae2.MirrorPatternProviderBlockEntity;
 import com.extendedae_plus.content.matrix.CrafterCorePlusBlockEntity;
 import com.extendedae_plus.content.matrix.PatternCorePlusBlockEntity;
 import com.extendedae_plus.content.matrix.SpeedCorePlusBlockEntity;
-import com.extendedae_plus.content.crystal.SuperCrystalAssemblerBlockEntity;
-import com.extendedae_plus.content.cutter.SuperCircuitCutterBlockEntity;
 import com.extendedae_plus.init.*;
 import com.extendedae_plus.recipe.ModRecipeSerializers;
 import com.extendedae_plus.util.storage.InfinityStorageManager;
@@ -162,34 +157,6 @@ public class ExtendedAEPlus {
                     null
             );
 
-            ModBlocks.SUPER_ASSEMBLER_MATRIX_FRAME.get().setBlockEntity(
-                    com.extendedae_plus.content.matrix.supermatrix.SuperAssemblerMatrixFrameBlockEntity.class,
-                    ModBlockEntities.SUPER_ASSEMBLER_MATRIX_FRAME_BE.get(),
-                    null,
-                    null
-            );
-
-            ModBlocks.SUPER_ASSEMBLER_MATRIX_WALL.get().setBlockEntity(
-                    com.extendedae_plus.content.matrix.supermatrix.SuperAssemblerMatrixWallBlockEntity.class,
-                    ModBlockEntities.SUPER_ASSEMBLER_MATRIX_WALL_BE.get(),
-                    null,
-                    null
-            );
-
-            ModBlocks.CRYSTAL_ASSEMBLER_PLUS.get().setBlockEntity(
-                    SuperCrystalAssemblerBlockEntity.class,
-                    ModBlockEntities.CRYSTAL_ASSEMBLER_PLUS_BE.get(),
-                    null,
-                    null
-            );
-
-            ModBlocks.CIRCUIT_CUTTER_PLUS.get().setBlockEntity(
-                    SuperCircuitCutterBlockEntity.class,
-                    ModBlockEntities.CIRCUIT_CUTTER_PLUS_BE.get(),
-                    null,
-                    null
-            );
-
             ((AEBaseEntityBlock) ModBlocks.MIRROR_PATTERN_PROVIDER_BLOCK.get()).setBlockEntity(
                     MirrorPatternProviderBlockEntity.class,
                     ModBlockEntities.MIRROR_PATTERN_PROVIDER_BE.get(),
@@ -211,13 +178,6 @@ public class ExtendedAEPlus {
             try {
                 // 注册升级卡
                 new UpgradeCards(event);
-
-                // 为 PartItem 注册 AE2 部件模型
-                PartModels.registerModels(
-                        PartModelsHelper.createModels(
-                                ModItems.ENTITY_TICKER_PART_ITEM.get().getPartClass().asSubclass(IPart.class)
-                        )
-                );
 
                 // 注册自定义 AE2 MenuLocator（用于 Curios 槽位打开菜单）
                 try {

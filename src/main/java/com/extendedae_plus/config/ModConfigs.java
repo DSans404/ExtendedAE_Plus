@@ -12,7 +12,6 @@ public final class ModConfigs {
     public static final ModConfigSpec CLIENT_SPEC;
     public static final ModConfigSpec.BooleanValue SHOW_ENCODER_PATTERN_PLAYER;
     public static final ModConfigSpec.BooleanValue PATTERN_TERMINAL_SHOW_SLOTS_DEFAULT;
-    public static final ModConfigSpec.BooleanValue PRIORITIZE_DISK_ENERGY;
 
     // Server 配置
     public static final ModConfigSpec SERVER_SPEC;
@@ -22,9 +21,6 @@ public final class ModConfigs {
     public static final ModConfigSpec.DoubleValue WIRELESS_MAX_RANGE;
     public static final ModConfigSpec.BooleanValue WIRELESS_CROSS_DIM_ENABLE;
     public static final ModConfigSpec.DoubleValue WIRELESS_IDLE_POWER;
-    public static final ModConfigSpec.IntValue ENTITY_TICKER_COST;
-    public static final ModConfigSpec.ConfigValue<List<? extends String>> ENTITY_TICKER_BLACK_LIST;
-    public static final ModConfigSpec.ConfigValue<List<? extends String>> ENTITY_TICKER_MULTIPLIERS;
 
     static {
         // Common 配置
@@ -94,41 +90,6 @@ public final class ModConfigs {
                 .defineInRange("wirelessIdlePower", 100.0D, 0.0D, Double.MAX_VALUE);
         serverBuilder.pop();
 
-        serverBuilder.push("entitySpeedTicker");
-        ENTITY_TICKER_COST = serverBuilder
-                .comment(
-                        "实体加速器能量消耗基础值"
-                )
-                .defineInRange("entityTickerCost", 512, 0, Integer.MAX_VALUE);
-        ENTITY_TICKER_BLACK_LIST = serverBuilder
-                .comment(
-                        "实体加速器黑名单：匹配的方块将不会被加速。支持通配符/正则（例如：minecraft:*）",
-                        "格式：全名或通配符/正则字符串，例如 'minecraft:chest'、'minecraft:*'、'modid:.*_fluid'"
-                )
-                .defineListAllowEmpty(
-                        List.of("entityTickerBlackList"),
-                        List::of,
-                        () -> "",
-                        obj -> obj instanceof String
-                );
-        ENTITY_TICKER_MULTIPLIERS = serverBuilder
-                .comment(
-                        "额外消耗倍率配置：为某些方块设置额外能量倍率，格式 'modid:blockid multiplier'，例如 'minecraft:chest 2x'",
-                        "支持通配符/正则匹配（例如 'minecraft:* 2x' 会对整个命名空间生效）。"
-                )
-                .defineListAllowEmpty(
-                        List.of("entityTickerMultipliers"),
-                        List::of,
-                        () -> "",
-                        obj -> obj instanceof String
-                );
-        PRIORITIZE_DISK_ENERGY = serverBuilder
-                .comment(
-                        "是否优先从磁盘提取FE能量（仅当Applied Flux模组存在时生效）",
-                        "开启后，将优先尝试从磁盘提取FE能量；反之优先消耗AE网络中的能量"
-                )
-                .define("prioritizeDiskEnergy", true);
-        serverBuilder.pop();
         SERVER_SPEC = serverBuilder.build();
     }
 

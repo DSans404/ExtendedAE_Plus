@@ -28,4 +28,4 @@ When installed in an Assembler Matrix, patterns created in the Pattern Encoding 
 
 > **Warning:** This is a breaking change. When updating from older versions to 1.4.3 or higher, you need to manually install this core in each Assembler Matrix you use to restore automatic upload functionality.
 
-> **Note:** This core only affects the **automatic upload of patterns from the Pattern Encoding Terminal to the Assembler Matrix**. It does not affect the logic for uploading processing patterns to **Pattern Providers**.
+> **Note:** This core only affects the **automatic upload of patterns from the Pattern Encoding Terminal to the Assembler Matrix**.

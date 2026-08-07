@@ -6,7 +6,6 @@ import appeng.client.gui.me.items.PatternEncodingTermScreen;
 import appeng.client.gui.me.items.ProcessingEncodingPanel;
 import appeng.client.gui.widgets.ActionButton;
 import com.extendedae_plus.ExtendedAEPlus;
-import com.extendedae_plus.client.screen.ProviderSelectScreen;
 import com.extendedae_plus.client.gui.widgets.ScaledTextureButton;
 import com.extendedae_plus.mixin.accessor.AbstractContainerScreenAccessor;
 import com.extendedae_plus.mixin.accessor.ScreenAccessor;
@@ -140,7 +139,7 @@ public abstract class ProcessingEncodingPanelMixin extends EncodingModePanel {
 
     @Inject(method = "setVisible", at = @At("TAIL"), remap = false)
     private void eap$updateInjectedButtons(boolean visible, CallbackInfo ci) {
-        boolean showInjectedButtons = visible && ProviderSelectScreen.isProcessingButtonsEnabled();
+        boolean showInjectedButtons = visible;
         this.cycleOutputBtn.setVisibility(visible && !showInjectedButtons);
 
         if (this.eap$mul2Button == null) {

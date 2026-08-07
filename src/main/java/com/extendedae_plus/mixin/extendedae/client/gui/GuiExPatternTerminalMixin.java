@@ -1,6 +1,5 @@
 package com.extendedae_plus.mixin.extendedae.client.gui;
 
-import appeng.api.crafting.PatternDetailsHelper;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.Icon;
 import appeng.client.gui.me.patternaccess.PatternContainerRecord;
@@ -24,7 +23,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -37,7 +35,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
 import java.util.Set;
@@ -52,17 +49,9 @@ import java.lang.reflect.Method;
 public abstract class GuiExPatternTerminalMixin extends AEBaseScreen<AEBaseMenu> {
 
     @Unique
-    private static final String UPLOAD_SUCCESS_MESSAGE = "✅ ExtendedAE Plus: 样板快速上传成功！";
-    @Unique
-    private static final String UPLOAD_FAILED_MESSAGE = "❌ ExtendedAE Plus: 样板上传失败，请检查供应器状态";
-    @Unique
-    private static final String NO_PROVIDER_MESSAGE = "ExtendedAE Plus: 请先选择一个样板供应器（点击GroupHeader旁的按钮）";
-    @Unique
     private IconButton eap$toggleSlotsButton;
     @Unique
     private boolean eap$showSlots = false; // 默认由配置初始化
-    @Unique
-    private long eap$currentlyChoicePatterProvider = -1; // 当前选择的样板供应器ID
     @Unique
     private final Map<Integer, Button> eap$openUIButtons = new HashMap<>();
 
@@ -77,91 +66,6 @@ public abstract class GuiExPatternTerminalMixin extends AEBaseScreen<AEBaseMenu>
         super(menu, playerInventory, title, style);
     }
 
-
-    /**
-     * 获取当前选择的样板供应器ID
-     */
-    @Unique
-    public long getCurrentlyChoicePatternProvider() {
-        return eap$currentlyChoicePatterProvider;
-    }
-
-    /**
-     * 设置当前选择的样板供应器ID
-     */
-    @Unique
-    public void setCurrentlyChoicePatternProvider(long id) {
-        this.eap$currentlyChoicePatterProvider = id;
-    }
-
-    /**
-     * 拦截鼠标点击事件，实现Shift+左键快速上传样板功能
-     * 注意：某些整合包的 ExtendedAE 版本不在该类中覆写 mouseClicked，此处设置 require=0 以防止注入失败导致崩溃。
-     */
-    @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true, require = 0)
-    private void onMouseClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
-        // 检查是否是左键点击 + Shift键
-        if (button == 0 && hasShiftDown()) {
-            // 获取点击的槽位
-            Slot hoveredSlot = this.getSlotUnderMouse();
-            if (hoveredSlot != null && hoveredSlot.container == this.minecraft.player.getInventory()) {
-                // 点击的是玩家背包槽位
-                ItemStack clickedItem = hoveredSlot.getItem();
-
-                // 检查是否是有效的编码样板
-                if (!clickedItem.isEmpty() && PatternDetailsHelper.isEncodedPattern(clickedItem)) {
-                    // 检查是否选择了样板供应器
-                    if (eap$currentlyChoicePatterProvider != -1) {
-                        // 执行快速上传
-                        this.eap$quickUploadPattern(hoveredSlot.getSlotIndex());
-
-                        // 取消默认的点击行为
-                        cir.setReturnValue(true);
-                    } else {
-                        // 显示提示消息：请先选择一个样板供应器
-                        if (this.minecraft.player != null) {
-                            this.minecraft.player.displayClientMessage(
-                                    Component.translatable("extendedae_plus.message.provider.select_first"),
-                                    true
-                            );
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * 快速上传样板到当前选择的供应器
-     */
-    @Unique
-    private void eap$quickUploadPattern(int playerSlotIndex) {
-        if (this.minecraft.player != null) {
-            // 获取要上传的物品
-            ItemStack itemToUpload = this.minecraft.player.getInventory().getItem(playerSlotIndex);
-
-            if (!itemToUpload.isEmpty() && PatternDetailsHelper.isEncodedPattern(itemToUpload)) {
-                // 改用我们自己的网络包，直接将玩家槽位与选择的供应器ID发送到服务器
-                try {
-                    PacketDistributor.sendToServer(new com.extendedae_plus.network.UploadInventoryPatternToProviderC2SPacket(
-                            playerSlotIndex,
-                            eap$currentlyChoicePatterProvider
-                    ));
-                } catch (Throwable t) {
-                    // 理论上不会失败，若失败则给出简要提示
-                    this.minecraft.player.displayClientMessage(
-                            Component.translatable("extendedae_plus.message.upload.client_fail"),
-                            true
-                    );
-                }
-            } else {
-                this.minecraft.player.displayClientMessage(
-                        Component.translatable("extendedae_plus.message.upload.invalid_item"),
-                        true
-                );
-            }
-        }
-    }
 
     @Unique
     private int getIntConst(Class<?> cls, String name, int defVal) {
@@ -243,14 +147,6 @@ public abstract class GuiExPatternTerminalMixin extends AEBaseScreen<AEBaseMenu>
         } catch (Throwable t) {
             // 静默失败：不输出日志
         }
-    }
-
-    /**
-     * 重置当前选择的样板供应器ID
-     */
-    @Unique
-    public void resetCurrentlyChoicePatternProvider() {
-        this.eap$currentlyChoicePatterProvider = -1;
     }
 
     @Inject(method = "<init>(Lcom/glodblock/github/extendedae/container/ContainerExPatternTerminal;Lnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/network/chat/Component;Lappeng/client/gui/style/ScreenStyle;)V", at = @At("TAIL"), remap = false, require = 0)

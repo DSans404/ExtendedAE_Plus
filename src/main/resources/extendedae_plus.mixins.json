@@ -95,7 +95,6 @@
     "ae2.client.gui.CraftConfirmScreenMixin",
     "ae2.client.gui.CraftingStatusTableRendererMixin",
     "ae2.client.gui.InterfaceScreenMixin",
-    "ae2.client.gui.PatternEncodingTermScreenMixin",
     "ae2.client.gui.PatternEncodingTermUploadMixin",
     "ae2.client.gui.PatternProviderCloseMixin",
     "ae2.client.gui.PatternProviderScreenUpgradesMixin",
@@ -111,8 +110,6 @@
     "extendedae.client.gui.GuiExPatternProviderMixin",
     "extendedae.client.gui.GuiExPatternTerminalMixin",
     "hooks.ModelBakeryMixin",
-    "jei.AE2JeiEncodePatternTransferHandlerMixin",
-    "jei.EncodePatternTransferHandlerMixin",
     "jei.EncodingHelperMixin",
     "jei.accessor.BookmarkOverlayAccessor"
   ],
